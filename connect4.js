@@ -10,11 +10,14 @@
 class Game {
 
   //Constructor Function
-  constructor(width = 7, height = 6, currPlayer = 1, board = []) {
+  constructor(height = 6, width = 7, currPlayer = 1, board = []) {
     this.width = width;
     this.height = height;
     this.currPlayer = currPlayer;
     this.board = board;
+    this.htmlBoard = document.getElementById('board')
+    this.makeBoard();
+    this.makeHtmlBoard();
   }
 
 /** makeBoard: create in-JS board structure:
@@ -28,7 +31,7 @@ class Game {
 
 /** makeHtmlBoard: make HTML table and row of column tops. */
   makeHtmlBoard() {
-    const board = document.getElementById('board');
+    // const board = document.getElementById('board');
 
     // make column tops (clickable area for adding a piece to that column)
     const top = document.createElement('tr');
@@ -40,7 +43,7 @@ class Game {
       headCell.setAttribute('id', x);
       top.append(headCell);
     }
-    board.append(top);
+    this.htmlBoard.append(top);
 
     // make main part of board
     for (let y = 0; y < this.height; y++) {
@@ -50,14 +53,14 @@ class Game {
         cell.setAttribute('id', `c-${y}-${x}`);
         row.append(cell);
       }
-      board.append(row);
+      this.htmlBoard.append(row);
     }
   }
 
   /** findSpotForCol: given column x, return top empty y (null if filled) */
   findSpotForCol(x) {
     for (let y = this.height - 1; y >= 0; y--) {
-      if (!board[y][x]) {
+      if (!this.board[y][x]) {
         return y;
       }
     }
@@ -68,7 +71,7 @@ class Game {
   placeInTable(y, x) {
     const piece = document.createElement('div');
     piece.classList.add('piece');
-    piece.classList.add(`p${currPlayer}`);
+    piece.classList.add(`p${this.currPlayer}`);
     piece.style.top = -50 * (y + 2);
 
     const spot = document.getElementById(`c-${y}-${x}`);
@@ -102,7 +105,7 @@ class Game {
 
     // check for tie
     if (this.board.every(row => row.every(cell => cell))) {
-      return endGame('Tie!');
+      return this.endGame('Tie!');
     }
 
     // switch players
@@ -145,5 +148,4 @@ class Game {
 
 }
 
-makeBoard();
-makeHtmlBoard();
+new Game(6,7);

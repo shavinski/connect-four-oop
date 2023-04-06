@@ -7,7 +7,7 @@
  * board fills (tie)
  */
 
-Class Game() {
+class Game {
 
   //Constructor Function
   constructor(width = 7, height = 6, currPlayer = 1, board = []) {

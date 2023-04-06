@@ -9,13 +9,15 @@
 
 class Game {
 
-  //Constructor Function
   constructor(height = 6, width = 7, currPlayer = 1, board = []) {
+    //Instance variables
     this.width = width;
     this.height = height;
     this.currPlayer = currPlayer;
     this.board = board;
-    this.htmlBoard = document.getElementById('board')
+    this.htmlBoard = document.getElementById('board');
+
+    //Actually create memory & htmlBoard
     this.makeBoard();
     this.makeHtmlBoard();
   }
@@ -31,16 +33,17 @@ class Game {
 
 /** makeHtmlBoard: make HTML table and row of column tops. */
   makeHtmlBoard() {
+    console.log('start making htmlBoard');
     // const board = document.getElementById('board');
 
     // make column tops (clickable area for adding a piece to that column)
     const top = document.createElement('tr');
     top.setAttribute('id', 'column-top');
-    top.addEventListener('click', this.handleClick);
+    top.addEventListener('click', this.handleClick.bind(Game));
 
     for (let x = 0; x < this.width; x++) {
       const headCell = document.createElement('td');
-      headCell.setAttribute('id', x);
+      headCell.setAttribute('id', `top-${x}`);
       top.append(headCell);
     }
     this.htmlBoard.append(top);
@@ -87,9 +90,11 @@ class Game {
   handleClick(evt) {
     // get x from ID of clicked cell
     const x = +evt.target.id.slice('top-'.length);
-
+    // console.log('x=', x);
     // get next spot in column (if none, ignore click)
-    const y = this.findSpotForCol(x);
+    console.log('this is', this);
+    const y = findSpotForCol(x)
+    console.log('y=',y);
     if (y === null) {
       return;
     }

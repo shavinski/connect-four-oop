@@ -17,15 +17,25 @@ class Game {
     this.board = board;
     this.htmlBoard = document.getElementById('board');
 
-    //Actually create memory & htmlBoard
+    if(this.board.length > 0 || this.htmlBoard.firstChild) {
+      this.board = [];
+      while (this.htmlBoard.firstChild) {
+        this.htmlBoard.removeChild(this.htmlBoard.firstChild);
+      }
+    }
     this.makeBoard();
     this.makeHtmlBoard();
+
+    // //Actually create memory & htmlBoard
+    // this.makeBoard();
+    // this.makeHtmlBoard();
   }
 
 /** makeBoard: create in-JS board structure:
  *   board = array of rows, each row is array of cells  (board[y][x])
 */
   makeBoard() {
+    this.board = [];
     for (let y = 0; y < this.height; y++) {
       this.board.push(Array.from({ length: this.width }));
     }
@@ -33,6 +43,7 @@ class Game {
 
 /** makeHtmlBoard: make HTML table and row of column tops. */
   makeHtmlBoard() {
+
     console.log('start making htmlBoard');
     // const board = document.getElementById('board');
 
@@ -43,7 +54,7 @@ class Game {
 
     for (let x = 0; x < this.width; x++) {
       const headCell = document.createElement('td');
-      headCell.setAttribute('id', `top-${x}`);
+      headCell.setAttribute('id', `top-${x}`);//just x ?
       top.append(headCell);
     }
     this.htmlBoard.append(top);
@@ -89,6 +100,8 @@ class Game {
   /** handleClick: handle click of column top to play piece */
   handleClick(evt) {
     // get x from ID of clicked cell
+    console.log("evt.target.id.slice ", evt.target.id.slice('top-'.length));
+    console.log("this is ", this);
     const x = +evt.target.id.slice('top-'.length);
     // console.log('x=', x);
     // get next spot in column (if none, ignore click)
@@ -112,7 +125,7 @@ class Game {
     if (this.board.every(row => row.every(cell => cell))) {
       return this.endGame('Tie!');
     }
-
+    console.log('player is', this.currPlayer)
     // switch players
     this.currPlayer = this.currPlayer === 1 ? 2 : 1;
   }

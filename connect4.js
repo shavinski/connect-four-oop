@@ -77,7 +77,7 @@ class Game {
   handleClick(evt) {
    
     const x = +evt.target.id.slice('top-'.length);
-    console.log(evt.target);
+    console.log('this =>', this);
     const y = this.findSpotForCol(x)
     if (y === null) {
       return;
